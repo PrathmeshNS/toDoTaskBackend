@@ -16,43 +16,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
-
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("/task")
 public class TaskController {
-	
+
 	@Autowired
-	TaskService  service;
-	
-//	@GetMapping("")
-//	public List<Task> getTask() {
-//		return service.getAllTask();
-//		
-//	}
-//	
+	TaskService service;
+
+	// @GetMapping("")
+	// public List<Task> getTask() {
+	// return service.getAllTask();
+	//
+	// }
+
+	@GetMapping("")
+	public String greate() {
+		return "Hiii";
+	}
 
 	@GetMapping("/byId/{id}")
 	public Task getTaskById(@PathVariable("id") String id) {
 		return service.getTaskById(Integer.parseInt(id));
 	}
-	
+
 	@PostMapping("/insert")
-	public String addTask(@RequestBody Task	task) {
+	public String addTask(@RequestBody Task task) {
 		return service.addTask(task);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
-	public String deleteTask(@PathVariable String id) {	
+	public String deleteTask(@PathVariable String id) {
 		return service.deleteTask(Integer.parseInt(id));
 	}
 
-	
 	@PostMapping("/update")
-	public String updateTask(@RequestBody Task task) {	
+	public String updateTask(@RequestBody Task task) {
 		return service.updateTask(task);
 	}
-	
+
 }
