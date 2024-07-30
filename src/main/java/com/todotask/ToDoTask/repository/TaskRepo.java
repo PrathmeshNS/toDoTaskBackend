@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.todotask.ToDoTask.entity.Task;
 import com.todotask.ToDoTask.entity.User;
+import com.todotask.ToDoTask.utility.PredefineTaskString;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -45,8 +46,8 @@ public class TaskRepo {
 	public boolean deleteTask(long id) {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
-		Query<Task>  query = session.createQuery("DELETE FROM Task t WHERE t.taskId = :id");
-		query.setParameter("id", id);
+		Query<Task>  query = session.createQuery(PredefineTaskString.DELETE_BY_ID);
+		query.setParameter(PredefineTaskString.VAR_TASK_ID, id);
 		long check = (long) query.executeUpdate();
 		transaction.commit();
 		if (check>0) {
@@ -61,10 +62,9 @@ public class TaskRepo {
 	public boolean updateTask(Task task) {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
-		Query<Task> query = session.createQuery("UPDATE Task t SET t.taskName = :taskName"
-				+ " WHERE t.taskId = :taskId");
-		query.setParameter("taskName",task.getTaskName());
-		query.setParameter("taskId",task.getTaskId());
+		Query<Task> query = session.createQuery(PredefineTaskString.UPDATE_TASK_USIN_STRING_ID);
+		query.setParameter(PredefineTaskString.VAR_TASK_NAME,task.getTaskName());
+		query.setParameter(PredefineTaskString.VAR_TASK_ID,task.getTaskId());
 		long check =(long) query.executeUpdate();
 		transaction.commit();
 		if (check>0) {
@@ -74,25 +74,17 @@ public class TaskRepo {
 			return false;
 		}
 	}
-	
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<Task> getAllTask() {
-		Session session = factory.openSession();
-		Query<Task> taskQuery = session.createQuery("FROM Task");
-		return  taskQuery.list();
-	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public Task getTaskById(long id) {
 		Session session = factory.openSession();
-		Query<Task>  query = session.createQuery("FROM Task t WHERE t.taskId = :id");
-		query.setParameter("id", id);
+		Query<Task>  query = session.createQuery(PredefineTaskString.SEARCH_BY_ID);
+		query.setParameter(PredefineTaskString.VAR_TASK_ID, id);
 		try {
 			Task task = query.getSingleResult();
 			return task;
 		} catch (NoResultException e) {
-			LOGGER.atDebug();
-			LOGGER.debug(null, query, e);
+			LOGGER.warn("No Result Found");
 		}
 		return null;
 	}

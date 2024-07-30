@@ -1,7 +1,5 @@
 package com.todotask.ToDoTask.repository;
 
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.todotask.ToDoTask.entity.User;
+import com.todotask.ToDoTask.utility.PredefineUserString;
 
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.NonUniqueResultException;
 
 @Repository
 public class UserRepository {
@@ -32,16 +30,16 @@ public class UserRepository {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public User getUserById(int id) {
 		Session session = sessionFactory.openSession();
-		Query<User> query = session.createQuery("FROM User u WHERE u.id = :id ");
-		query.setParameter("id", id);
+		Query<User> query = session.createQuery(PredefineUserString.SEARCH_BY_ID);
+		query.setParameter(PredefineUserString.VAR_ID, id);
 		return query.getSingleResult();
 	}
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public User searchByEmail(String email) {
 		Session session = sessionFactory.openSession();
-		Query<User> query = session.createQuery("FROM User u WHERE u.email = :email ");
-		query.setParameter("email", email);
+		Query<User> query = session.createQuery(PredefineUserString.SEARCH_BY_EMAIL);
+		query.setParameter(PredefineUserString.VAR_EMAIL, email);
 		try {
 			return query.getSingleResult();			
 		} catch (NoResultException e ) {

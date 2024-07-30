@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.todotask.ToDoTask.entity.Task;
 import com.todotask.ToDoTask.entity.User;
 import com.todotask.ToDoTask.repository.TaskRepo;
+import com.todotask.ToDoTask.utility.PredefineTaskString;
 
 @Service
 public class TaskService {
@@ -17,30 +18,26 @@ public class TaskService {
 	
 	public String addTask(Task task) {
 		if (repo.addTask(task)) {
-			return "Task Inserted Successfully!!";
+			return PredefineTaskString.TASK_INSERTED_SUCCESSFULLY;
 		} 
 		else {
-			return "Something Wents wrong!!";
+			return PredefineTaskString.ERROR_MESSAGE;
 		}
 	}
 	
-	public List<Task> getAllTask() {
-		return repo.getAllTask();
-	}
-
 	public String deleteTask(int id) {
 		if (repo.deleteTask((long)id)) {
-			return "Task Deleted Successfully!!";
+			return PredefineTaskString.TASK_DELETE ;
 		} else {
-			return "No Task Found While Deleting";
+			return PredefineTaskString.TASK_DELETE_ERROR_MESSAGE ;
 		}
 	}
 	
 	public String updateTask(Task task) {
 		if (repo.updateTask(task)) {
-			return "Task Updated Successfully!!";
+			return PredefineTaskString.TASK_UPDATED;
 		} else {
-			return "No Task Found for Updted";
+			return PredefineTaskString.TASK_UPDATED_ERROR_MESSAGE;
 		}
 	}
 
